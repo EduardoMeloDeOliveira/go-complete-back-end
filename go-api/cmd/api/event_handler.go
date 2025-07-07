@@ -12,7 +12,7 @@ func (app *Application) createEvent(ginContext *gin.Context) {
 	var event database.Event
 
 	if err := ginContext.ShouldBindJSON(&event); err != nil {
-		ginContext.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		ginContext.JSON(http.StatusBadRequest, gin.H{"error":"Invalid id"})
 		return
 	}
 
@@ -28,10 +28,10 @@ func (app *Application) createEvent(ginContext *gin.Context) {
 }
 
 func (app *Application) getEventById(ginContext *gin.Context) {
-	id, err := strconv.Atoi(ginContext.Param("Id"))
+	id, err := strconv.Atoi(ginContext.Param("id"))
 
 	if err != nil {
-		ginContext.JSON(http.StatusBadRequest, gin.H{"error": "Invalid event Id"})
+		ginContext.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -111,6 +111,19 @@ func (app * Application) deleteEvent (ginContext * gin.Context){
 		return
 	}
 
+	event,err := app.models.Event.Get(id) 
+
+	if event == nil {
+		ginContext.JSON(http.StatusNotFound, gin.H{"error" : "event not found"})
+		return
+	}
+
+	if err != nil{
+		ginContext.JSON(http.StatusInternalServerError, gin.H{"error" : err.Error() })
+		return
+	}
+
+	
 
 	if err := app.models.Event.Delete(id); err != nil{
 		ginContext.JSON(http.StatusInternalServerError, gin.H{"error" : err.Error()})
