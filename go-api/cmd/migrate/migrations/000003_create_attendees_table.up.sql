@@ -6,4 +6,4 @@ CREATE TABLE IF NOT EXISTS attendees(
         FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     CONSTRAINT fk_event 
         FOREIGN KEY (event_id) REFERENCES events (id) ON DELETE CASCADE
-)
+);
