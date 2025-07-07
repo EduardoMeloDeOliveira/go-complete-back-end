@@ -7,8 +7,8 @@ type UserModel struct {
 }
 
 type User struct {
-	Id       int    `json: "user_id"`
-	Name     string `json : "user_name"`
-	Email    string `json : "user_email"`
-	Password string `json : "user_passwd" `
+	Id       int    `json:"user_id"`
+	Name     string `json:"user_name" binding:"required,min=3"`
+	Email    string `json:"user_email" binding:"required,email"`
+	Password string `json:"user_passwd" binding:"required" `
 }
