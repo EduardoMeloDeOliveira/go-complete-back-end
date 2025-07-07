@@ -2,10 +2,12 @@ package main
 
 import (
 	"database/sql"
-	"log"
-	"os"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/postgres"
+	_ "github.com/golang-migrate/migrate/v4/source/file"
+	_ "github.com/lib/pq"
+	"log"
+	"os"
 )
 
 func main() {
@@ -15,7 +17,7 @@ func main() {
 
 	direction := os.Args[1]
 
-	dsn := "postgres://postgres:postgres@localhost:5432/mydb?sslmode=disable"
+	dsn := "postgres://root:1033@localhost:5432/goDB?sslmode=disable"
 
 	db, err := sql.Open("postgres", dsn)
 	if err != nil {
@@ -29,7 +31,7 @@ func main() {
 	}
 
 	m, err := migrate.NewWithDatabaseInstance(
-		"file://cmd/migrate/migrations", 
+		"file://cmd/migrate/migrations",
 		"postgres",
 		driver,
 	)
